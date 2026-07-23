@@ -13,7 +13,7 @@ import {
   __toESM
 } from "./chunk-G3PMV62Z.js";
 
-// node_modules/lodash/isArray.js
+
 var require_isArray = __commonJS({
   "node_modules/lodash/isArray.js"(exports, module) {
     var isArray = Array.isArray;
@@ -30531,8 +30531,7 @@ var getAxisMapByItems = function getAxisMapByItems2(props, _ref3) {
         originalDomain,
         isCategorical,
         layout
-        // specify scale when no Axis
-        // scale: isCategorical ? 'band' : 'linear',
+       
       })));
     }
     return result;
@@ -31796,12 +31795,10 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
     if (dataKey !== prevState.prevDataKey || data !== prevState.prevData || width !== prevState.prevWidth || height !== prevState.prevHeight || layout !== prevState.prevLayout || stackOffset !== prevState.prevStackOffset || !shallowEqual(margin, prevState.prevMargin)) {
       var _defaultState = createDefaultState(nextProps);
       var keepFromPrevState = {
-        // (chartX, chartY) are (0,0) in default state, but we want to keep the last mouse position to avoid
-        // any flickering
+
         chartX: prevState.chartX,
         chartY: prevState.chartY,
-        // The tooltip should stay active when it was active in the previous render. If this is not
-        // the case, the tooltip disappears and immediately re-appears, causing a flickering effect
+      
         isTooltipActive: prevState.isTooltipActive
       };
       var updatesToState = _objectSpread46(_objectSpread46({}, getTooltipData(prevState, data, layout)), {}, {
@@ -31868,7 +31865,7 @@ var generateCategoricalChart = function generateCategoricalChart2(_ref6) {
   return CategoricalChart;
 };
 
-// node_modules/recharts/es6/chart/LineChart.js
+
 var LineChart = generateCategoricalChart({
   chartName: "LineChart",
   GraphicalChild: Line,
@@ -31882,7 +31879,7 @@ var LineChart = generateCategoricalChart({
   formatAxisMap: formatAxisMap3
 });
 
-// node_modules/recharts/es6/chart/BarChart.js
+
 var BarChart = generateCategoricalChart({
   chartName: "BarChart",
   GraphicalChild: Bar,
@@ -31924,14 +31921,13 @@ var PieChart = generateCategoricalChart({
   }
 });
 
-// node_modules/recharts/es6/chart/Treemap.js
+
 var import_isNaN4 = __toESM(require_isNaN());
 var import_isFunction27 = __toESM(require_isFunction());
 var import_omit = __toESM(require_omit());
 var import_get7 = __toESM(require_get());
 var import_react55 = __toESM(require_react());
-
-// node_modules/recharts/es6/util/Constants.js
+s
 var COLOR_PANEL = ["#1890FF", "#66B5FF", "#41D9C7", "#2FC25B", "#6EDB8F", "#9AE65C", "#FACC14", "#E6965C", "#57AD71", "#223273", "#738AE6", "#7564CC", "#8543E0", "#A877ED", "#5C8EE6", "#13C2C2", "#70E0E0", "#5CA3E6", "#3436C7", "#8082FF", "#DD81E6", "#F04864", "#FA7D92", "#D598D9"];
 
 // node_modules/recharts/es6/chart/Treemap.js
@@ -33400,7 +33396,6 @@ _defineProperty54(Sankey, "defaultProps", {
   sort: true
 });
 
-// node_modules/recharts/es6/chart/RadarChart.js
 var RadarChart = generateCategoricalChart({
   chartName: "RadarChart",
   GraphicalChild: Radar,
@@ -33423,7 +33418,7 @@ var RadarChart = generateCategoricalChart({
   }
 });
 
-// node_modules/recharts/es6/chart/ScatterChart.js
+
 var ScatterChart = generateCategoricalChart({
   chartName: "ScatterChart",
   GraphicalChild: Scatter,
@@ -33442,7 +33437,7 @@ var ScatterChart = generateCategoricalChart({
   formatAxisMap: formatAxisMap3
 });
 
-// node_modules/recharts/es6/chart/AreaChart.js
+
 var AreaChart = generateCategoricalChart({
   chartName: "AreaChart",
   GraphicalChild: Area,
@@ -33499,7 +33494,7 @@ var ComposedChart = generateCategoricalChart({
   formatAxisMap: formatAxisMap3
 });
 
-// node_modules/recharts/es6/chart/SunburstChart.js
+
 var import_react57 = __toESM(require_react());
 function _extends43() {
   _extends43 = Object.assign ? Object.assign.bind() : function(target) {
@@ -34378,4 +34373,4 @@ object-assign/index.js:
   @license MIT
   *)
 */
-//# sourceMappingURL=recharts.js.map
+

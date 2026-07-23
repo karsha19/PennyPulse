@@ -8,14 +8,14 @@ import {
   __toESM
 } from "./chunk-G3PMV62Z.js";
 
-// node_modules/react-router-dom/dist/index.js
+
 var React2 = __toESM(require_react());
 var ReactDOM = __toESM(require_react_dom());
 
-// node_modules/react-router/dist/index.js
+
 var React = __toESM(require_react());
 
-// node_modules/@remix-run/router/dist/router.js
+
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
@@ -179,7 +179,7 @@ function createHashHistory(options) {
         search,
         hash
       },
-      // state defaults to `null` because `window.history.state` does
+     
       globalHistory.state && globalHistory.state.usr || null,
       globalHistory.state && globalHistory.state.key || "default"
     );
@@ -233,10 +233,7 @@ function createLocation(current, to, state, key) {
     hash: ""
   }, typeof to === "string" ? parsePath(to) : to, {
     state,
-    // TODO: This could be cleaned up.  push/replace should probably just take
-    // full Locations now and avoid the need to run through this flow at all
-    // But that's a pretty big refactor to the current test suite so going to
-    // keep as is for the time being and just let any incoming keys take precedence
+
     key: to && to.key || key || createKey()
   });
   return location;
@@ -493,8 +490,7 @@ function flattenRoutes(routes, branches, parentsMeta, parentPath) {
     let routesMeta = parentsMeta.concat(meta);
     if (route.children && route.children.length > 0) {
       invariant(
-        // Our types know better, but runtime JS may not!
-        // @ts-expect-error
+        
         route.index !== true,
         "Index routes must not have child routes. Please remove " + ('all child routes from route path "' + path + '".')
       );
@@ -562,14 +558,10 @@ function computeScore(path, index) {
 function compareIndexes(a, b) {
   let siblings = a.length === b.length && a.slice(0, -1).every((n, i) => n === b[i]);
   return siblings ? (
-    // If two routes are siblings, we should try to match the earlier sibling
-    // first. This allows people to have fine-grained control over the matching
-    // behavior by simply putting routes with identical paths in the order they
-    // want them tried.
+  
     a[a.length - 1] - b[b.length - 1]
   ) : (
-    // Otherwise, it doesn't really make sense to rank non-siblings by index,
-    // so they sort equally.
+ 
     0
   );
 }
@@ -1164,7 +1156,7 @@ function createRouter(init) {
     matches: initialMatches,
     initialized,
     navigation: IDLE_NAVIGATION,
-    // Don't restore on initial updateState() if we were SSR'd
+  
     restoreScrollPosition: init.hydrationData != null ? false : null,
     preventScrollReset: false,
     revalidation: "idle",
@@ -1445,8 +1437,7 @@ function createRouter(init) {
     }
     return await startNavigation(historyAction, nextLocation, {
       submission,
-      // Send through the formData serialization error if we have one so we can
-      // render at the right error boundary after we match routes
+      
       pendingError: error,
       preventScrollReset,
       replace: opts && opts.replace,
@@ -1470,7 +1461,7 @@ function createRouter(init) {
     }
     startNavigation(pendingAction || state.historyAction, state.navigation.location, {
       overrideNavigation: state.navigation,
-      // Proxy through any rending view transition
+      
       enableViewTransition: pendingViewTransitionEnabled === true
     });
   }
@@ -1485,7 +1476,7 @@ function createRouter(init) {
     let routesToUse = inFlightDataRoutes || dataRoutes;
     let loadingNavigation = opts && opts.overrideNavigation;
     let matches = opts != null && opts.initialHydration && state.matches && state.matches.length > 0 && !initialMatchesIsFOW ? (
-      // `matchRoutes()` has already been called if we're in here via `router.initialize()`
+     
       state.matches
     ) : matchRoutes(routesToUse, location, basename);
     let flushSync = (opts && opts.flushSync) === true;
@@ -1726,7 +1717,7 @@ function createRouter(init) {
       completeNavigation(location, _extends({
         matches,
         loaderData: {},
-        // Commit pending error if we're short circuiting
+   
         errors: pendingActionResult && isErrorResult(pendingActionResult[1]) ? {
           [pendingActionResult[0]]: pendingActionResult[1].error
         } : null
@@ -2168,7 +2159,7 @@ function createRouter(init) {
         submission: _extends({}, activeSubmission, {
           formAction: location
         }),
-        // Preserve these flags across redirects
+        
         preventScrollReset: preventScrollReset || pendingPreventScrollReset,
         enableViewTransition: isNavigation ? pendingViewTransitionEnabled : void 0
       });
@@ -2176,9 +2167,9 @@ function createRouter(init) {
       let overrideNavigation = getLoadingNavigation(redirectLocation, submission);
       await startNavigation(redirectHistoryAction, redirectLocation, {
         overrideNavigation,
-        // Send fetcher submissions through for shouldRevalidate
+       
         fetcherSubmission,
-        // Preserve these flags across redirects
+       
         preventScrollReset: preventScrollReset || pendingPreventScrollReset,
         enableViewTransition: isNavigation ? pendingViewTransitionEnabled : void 0
       });
@@ -2586,8 +2577,7 @@ function createRouter(init) {
     navigate,
     fetch,
     revalidate,
-    // Passthrough to history-aware createHref used by useHref so we get proper
-    // hash-aware URLs in DOM paths
+    
     createHref: (to) => init.history.createHref(to),
     encodeLocation: (to) => init.history.encodeLocation(to),
     getFetcher,
@@ -2598,8 +2588,7 @@ function createRouter(init) {
     patchRoutes,
     _internalFetchControllers: fetchControllers,
     _internalActiveDeferreds: activeDeferreds,
-    // TODO: Remove setRoutes, it's temporary to avoid dealing with
-    // updating the tree while validating the update algorithm.
+   
     _internalSetRoutes
   };
   return router;
@@ -2676,7 +2665,7 @@ function normalizeNavigateOptions(normalizeFormMethod, isFetcher, path, opts) {
         return getInvalidBodyError();
       }
       let text = typeof opts.body === "string" ? opts.body : opts.body instanceof FormData || opts.body instanceof URLSearchParams ? (
-        // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#plain-text-form-data
+     
         Array.from(opts.body.entries()).reduce((acc, _ref3) => {
           let [name, value] = _ref3;
           return "" + acc + name + "=" + value + "\n";
@@ -2811,7 +2800,7 @@ function getMatchesToLoad(history, state, matches, submission, location, initial
       actionResult,
       actionStatus,
       defaultShouldRevalidate: shouldSkipRevalidation ? false : (
-        // Forced revalidation due to submission, useRevalidator, or X-Remix-Revalidate
+        
         isRevalidationRequired || currentUrl.pathname + currentUrl.search === nextUrl.pathname + nextUrl.search || // Search params affect all loaders
         currentUrl.search !== nextUrl.search || isNewRouteInstance(currentRouteMatch, nextRouteMatch)
       )
@@ -2898,9 +2887,9 @@ function isNewLoader(currentLoaderData, currentMatch, match) {
 function isNewRouteInstance(currentMatch, match) {
   let currentPath = currentMatch.route.path;
   return (
-    // param change for this match, /users/123 -> /users/456
+    
     currentMatch.pathname !== match.pathname || // splat param changed, which is not present in match.path
-    // e.g. /files/images/avatar.jpg -> files/finances.xls
+  
     currentPath != null && currentPath.endsWith("*") && currentMatch.params["*"] !== match.params["*"]
   );
 }
@@ -3053,9 +3042,7 @@ async function callLoaderOrAction(type, request, match, loadRoutePromise, handle
       if (handler) {
         let handlerError;
         let [value] = await Promise.all([
-          // If the handler throws, don't let it immediately bubble out,
-          // since we need to let the lazy() execution finish so we know if this
-          // route has a boundary that can handle the error
+        
           runHandler(handler).catch((e) => {
             handlerError = e;
           }),
@@ -3215,7 +3202,7 @@ function normalizeRedirectLocation(location, currentUrl, basename, historyInstan
     "devtools:",
     "file:",
     "filesystem:",
-    // eslint-disable-next-line no-script-url
+
     "javascript:"
   ];
   if (ABSOLUTE_URL_REGEX.test(location)) {
@@ -3359,7 +3346,7 @@ function processLoaderData(state, matches, results, pendingActionResult, revalid
     pendingActionResult,
     activeDeferreds,
     false
-    // This method is only called client side so we always want to bubble
+    
   );
   revalidatingFetchers.forEach((rf) => {
     let {
@@ -3415,7 +3402,7 @@ function getActionDataForCommit(pendingActionResult) {
     return {};
   }
   return isErrorResult(pendingActionResult[1]) ? {
-    // Clear out prior actionData on errors
+    
     actionData: {}
   } : {
     actionData: {
@@ -3823,8 +3810,7 @@ function useHref(to, _temp) {
   } = _temp === void 0 ? {} : _temp;
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of the
-    // router loaded. We can help them understand how to avoid that.
+    
     "useHref() may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   let {
@@ -3854,8 +3840,7 @@ function useInRouterContext() {
 function useLocation() {
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of the
-    // router loaded. We can help them understand how to avoid that.
+    
     "useLocation() may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   return React.useContext(LocationContext).location;
@@ -3866,8 +3851,7 @@ function useNavigationType() {
 function useMatch(pattern) {
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of the
-    // router loaded. We can help them understand how to avoid that.
+ 
     "useMatch() may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   let {
@@ -3891,8 +3875,7 @@ function useNavigate() {
 function useNavigateUnstable() {
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of the
-    // router loaded. We can help them understand how to avoid that.
+
     "useNavigate() may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   let dataRouterContext = React.useContext(DataRouterContext);
@@ -3972,8 +3955,7 @@ function useRoutes(routes, locationArg) {
 function useRoutesImpl(routes, locationArg, dataRouterState, future) {
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of the
-    // router loaded. We can help them understand how to avoid that.
+   
     "useRoutes() may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   let {
@@ -4021,12 +4003,12 @@ function useRoutesImpl(routes, locationArg, dataRouterState, future) {
     params: Object.assign({}, parentParams, match.params),
     pathname: joinPaths([
       parentPathnameBase,
-      // Re-encode pathnames that were decoded inside matchRoutes
+      
       navigator.encodeLocation ? navigator.encodeLocation(match.pathname).pathname : match.pathname
     ]),
     pathnameBase: match.pathnameBase === "/" ? parentPathnameBase : joinPaths([
       parentPathnameBase,
-      // Re-encode pathnames that were decoded inside matchRoutes
+     
       navigator.encodeLocation ? navigator.encodeLocation(match.pathnameBase).pathname : match.pathnameBase
     ])
   })), parentMatches, dataRouterState, future);
@@ -4499,8 +4481,7 @@ function Navigate(_ref4) {
   } = _ref4;
   !useInRouterContext() ? true ? invariant(
     false,
-    // TODO: This error is probably because they somehow have 2 versions of
-    // the router loaded. We can help them understand how to avoid that.
+    
     "<Navigate> may be used only in the context of a <Router> component."
   ) : invariant(false) : void 0;
   let {
@@ -4743,8 +4724,7 @@ function renderMatches(matches) {
 }
 function mapRouteProperties(route) {
   let updates = {
-    // Note: this check also occurs in createRoutesFromChildren so update
-    // there if you change this -- please and thank you!
+    
     hasErrorBoundary: route.ErrorBoundary != null || route.errorElement != null
   };
   if (route.Component) {
@@ -4800,7 +4780,7 @@ function createMemoryRouter(routes, opts) {
   }).initialize();
 }
 
-// node_modules/react-router-dom/dist/index.js
+
 function _extends3() {
   return _extends3 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e = 1; e < arguments.length; e++) {
@@ -4869,7 +4849,7 @@ function isFormDataSubmitterSupported() {
     try {
       new FormData(
         document.createElement("form"),
-        // @ts-expect-error if FormData supports the submitter parameter, this will throw
+       
         0
       );
       _formDataSupportsSubmitter = false;
@@ -5425,7 +5405,7 @@ var Link = React2.forwardRef(function LinkWithRef(_ref7, ref) {
     }
   }
   return (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
+   
     React2.createElement("a", _extends3({}, rest, {
       href: absoluteHref || href,
       onClick: isExternal || reloadDocument ? onClick : handleClick,
@@ -5620,9 +5600,7 @@ function useSearchParams(defaultInit) {
   let hasSetSearchParamsRef = React2.useRef(false);
   let location = useLocation();
   let searchParams = React2.useMemo(() => (
-    // Only merge in the defaults if we haven't yet called setSearchParams.
-    // Once we call that we want those to take precedence, otherwise you can't
-    // remove a param with setSearchParams({}) if it has an initial value
+  
     getSearchParamsForLocation(location.search, hasSetSearchParamsRef.current ? null : defaultSearchParamsRef.current)
   ), [location.search]);
   let navigate = useNavigate();
@@ -6020,42 +5998,3 @@ export {
   useSubmit,
   useViewTransitionState
 };
-/*! Bundled license information:
-
-@remix-run/router/dist/router.js:
-  (**
-   * @remix-run/router v1.23.3
-   *
-   * Copyright (c) Remix Software Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.md file in the root directory of this source tree.
-   *
-   * @license MIT
-   *)
-
-react-router/dist/index.js:
-  (**
-   * React Router v6.30.4
-   *
-   * Copyright (c) Remix Software Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.md file in the root directory of this source tree.
-   *
-   * @license MIT
-   *)
-
-react-router-dom/dist/index.js:
-  (**
-   * React Router DOM v6.30.4
-   *
-   * Copyright (c) Remix Software Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE.md file in the root directory of this source tree.
-   *
-   * @license MIT
-   *)
-*/
-//# sourceMappingURL=react-router-dom.js.map

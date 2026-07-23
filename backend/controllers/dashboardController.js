@@ -51,7 +51,7 @@ const getChartData = async (req, res, next) => {
     const userId = req.user.id;
     const year = Number(req.query.year) || new Date().getFullYear();
 
-    // Pie: spending by category (current month)
+
     const now = new Date();
     const month = Number(req.query.month) || now.getMonth() + 1;
     const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
@@ -72,7 +72,7 @@ const getChartData = async (req, res, next) => {
       color: c.Category.color,
     }));
 
-    // Bar: income vs expense per month for the year
+
     const monthlyRaw = await Transaction.findAll({
       where: { userId, date: { [Op.between]: [`${year}-01-01`, `${year}-12-31`] } },
       attributes: [
@@ -118,7 +118,7 @@ const getAnalytics = async (req, res, next) => {
 
     const totalTransactions = await Transaction.count({ where: { userId } });
 
-    // Average monthly spending: total expenses / number of distinct months with data
+    
     const monthsWithData = await Transaction.findAll({
       where: { userId, type: 'expense' },
       attributes: [[fn('DISTINCT', fn('DATE_FORMAT', col('date'), '%Y-%m')), 'ym']],

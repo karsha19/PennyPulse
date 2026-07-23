@@ -6,7 +6,6 @@ import {
   __commonJS
 } from "./chunk-G3PMV62Z.js";
 
-// node_modules/react-dom/client.js
 var require_client = __commonJS({
   "node_modules/react-dom/client.js"(exports) {
     var m = require_react_dom();
@@ -36,4 +35,4 @@ var require_client = __commonJS({
   }
 });
 export default require_client();
-//# sourceMappingURL=react-dom_client.js.map
+
