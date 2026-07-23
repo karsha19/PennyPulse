@@ -5,7 +5,7 @@ const ThemeContext = createContext(null);
 const getInitialTheme = () => {
   const stored = localStorage.getItem('theme');
   if (stored === 'dark' || stored === 'light') return stored;
-  // Auto-detect system preference on first visit
+
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 };
 

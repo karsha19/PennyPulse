@@ -1,7 +1,3 @@
--- Expense Tracker — MySQL Schema Reference
--- Note: Sequelize (sync) will auto-create these tables on server start.
--- This file is provided for reference / manual setup if you prefer raw SQL.
-
 CREATE DATABASE IF NOT EXISTS expense_tracker;
 USE expense_tracker;
 
@@ -57,7 +53,6 @@ CREATE TABLE budgets (
   UNIQUE KEY unique_budget (user_id, category_id, month, year)
 );
 
--- Default categories (also seeded automatically via `npm run seed`)
 INSERT INTO categories (name, type, icon, color, created_at, updated_at) VALUES
 ('Food', 'expense', 'Utensils', '#f97316', NOW(), NOW()),
 ('Travel', 'expense', 'Plane', '#0ea5e9', NOW(), NOW()),

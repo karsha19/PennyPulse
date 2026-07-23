@@ -1,5 +1,4 @@
-// Run with: npm run seed
-// Populates the categories table with the default set used across the app.
+
 require('dotenv').config();
 const { sequelize, Category } = require('../models');
 

@@ -11,7 +11,7 @@ const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
 const router = express.Router();
-router.use(protect); // all transaction routes require auth
+router.use(protect); 
 
 const transactionValidation = [
   body('title').trim().notEmpty().withMessage('Title is required'),

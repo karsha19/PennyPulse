@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true);
 
-  // Validate stored token on first load
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {

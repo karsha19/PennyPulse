@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Central Sequelize instance connected to MySQL
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     dialect: 'mysql',
     logging: false,
     define: {
-      underscored: true, // use snake_case column names in DB
+      underscored: true, 
       timestamps: true,
     },
     pool: {

@@ -1,8 +1,7 @@
-// Centralized error handling middleware. Any next(err) call lands here.
+
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
 
-  // Sequelize validation errors
   if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
     const messages = err.errors.map((e) => e.message);
     return res.status(400).json({ success: false, message: messages.join(', ') });
@@ -16,7 +15,6 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-// Catches requests to undefined routes
 const notFound = (req, res, next) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
 };

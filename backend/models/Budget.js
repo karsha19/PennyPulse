@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-// One budget row = one category's monthly limit for a given user & month
+
 const Budget = sequelize.define('Budget', {
   id: {
     type: DataTypes.INTEGER,
