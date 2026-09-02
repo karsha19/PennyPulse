@@ -1,8 +1,8 @@
-# PennyPulse— Full-Stack Expense Tracker
+PennyPulse— Full-Stack Expense Tracker
 
-A production-style personal finance tracker built with **React (Vite) + Tailwind CSS** on the frontend and **Node.js + Express + MySQL (Sequelize)** on the backend.
+A production-style personal finance tracker built with React (Vite) + Tailwind CSS on the frontend and Node.js + Express + MySQL (Sequelize) on the backend.
 
-## ✨ Features
+✨ Features
 
 ### Core
 - **Auth**: Register/Login with JWT + bcrypt password hashing, protected routes, logout.
@@ -20,7 +20,6 @@ A production-style personal finance tracker built with **React (Vite) + Tailwind
 
 ## 🗂️ Project Structure
 
-```
 expense-tracker/
 ├── backend/
 │   ├── config/         # Sequelize/MySQL connection
@@ -28,6 +27,7 @@ expense-tracker/
 │   ├── middleware/      # auth, validation, error handling
 │   ├── models/          # Sequelize models + associations
 │   ├── routes/          # Express routers
+│   ├── utils/            # JWT helper, category seeder, pulse score calculator
 │   ├── utils/            # JWT helper, category seeder, pulse score calculator
 │   ├── app.js
 │   └── server.js
@@ -39,64 +39,53 @@ expense-tracker/
 │       ├── hooks/        # custom hooks (useDebounce)
 │       ├── pages/        # route-level pages
 │       ├── utils/        # formatting helpers, mood options
+│       ├── utils/        # formatting helpers, mood options
 │       ├── App.jsx
 │       └── main.jsx
 └── database_schema.sql   # reference SQL (Sequelize auto-creates tables too)
-```
 
-## 🚀 Getting Started
+🚀 Getting Started
+Prerequisites
+Node.js 18+
+MySQL 8+ running locally (or a managed instance)
 
-### Prerequisites
-- Node.js 18+
-- MySQL 8+ running locally (or a managed instance)
+1. Backend Setup
 
-### 1. Backend Setup
-
-```bash
 cd backend
 npm install
 cp .env.example .env
 # Edit .env with your MySQL credentials and a strong JWT_SECRET
-```
 
 Create the database (Sequelize will create the tables automatically on first run):
 
-```sql
 CREATE DATABASE expense_tracker;
-```
 
 Seed the default categories (Food, Travel, Salary, etc.):
 
-```bash
 npm run seed
-```
 
 Start the API server:
 
-```bash
 npm run dev      # nodemon, auto-restarts
 # or
 npm start
-```
 
-The API runs at `http://localhost:5000`. Health check: `GET /api/health`.
+The API runs at http://localhost:5000. Health check: GET /api/health.
 
-### 2. Frontend Setup
+2. Frontend Setup
 
-```bash
 cd frontend
 npm install
 cp .env.example .env
 # VITE_API_URL=http://localhost:5000/api
 npm run dev
-```
 
-Visit `http://localhost:5173`, register a new account, and start tracking.
+Visit http://localhost:5173, register a new account, and start tracking.
 
-## 🔑 Environment Variables
+🔑 Environment Variables
 
-**backend/.env**
-```
+backend/.env
+
 PORT=5000
 DB_HOST=localhost
 DB_PORT=3306
@@ -106,10 +95,9 @@ DB_PASSWORD=your_mysql_password
 JWT_SECRET=change_this_to_a_long_random_secret
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
-```
 
-**frontend/.env**
-```
+frontend/.env
+
 VITE_API_URL=http://localhost:5000/api
 ```
 
@@ -134,15 +122,17 @@ VITE_API_URL=http://localhost:5000/api
 | GET    | /api/export/csv                                | Download CSV                         |
 | GET    | /api/export/pdf                                  | Download PDF                         |
 
-All routes except `/auth/register` and `/auth/login` require `Authorization: Bearer <token>`.
+All routes except /auth/register and /auth/login require Authorization: Bearer <token>.
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
 
-- **Frontend**: React 18, Vite, Tailwind CSS, React Router, Recharts, Axios, react-hot-toast, lucide-react
-- **Backend**: Express.js, Sequelize ORM, MySQL2, JWT, bcryptjs, express-validator, json2csv, pdfkit
-- **Auth**: JWT-based, bcrypt-hashed passwords, protected route middleware
+Frontend: React 18, Vite, Tailwind CSS, React Router, Recharts, Axios, react-hot-toast, lucide-react
 
-## 📝 Notes
+Backend: Express.js, Sequelize ORM, MySQL2, JWT, bcryptjs, express-validator, json2csv, pdfkit
+
+Auth: JWT-based, bcrypt-hashed passwords, protected route middleware
+
+📝 Notes
 
 - `sequelize.sync({ alter: true })` is used in development to auto-add schema changes (e.g. the `mood` column on transactions). For production, replace with proper migrations (e.g. `sequelize-cli`).
 - The category list is global (shared across users); transactions and budgets are scoped per-user via `user_id` foreign keys.
