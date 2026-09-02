@@ -4,7 +4,7 @@ const { Transaction, Category } = require('../models');
 // @route  POST /api/transactions
 const createTransaction = async (req, res, next) => {
   try {
-    const { title, amount, type, categoryId, date, notes } = req.body;
+    const { title, amount, type, categoryId, date, notes, mood } = req.body;
 
     const transaction = await Transaction.create({
       userId: req.user.id,
@@ -14,6 +14,7 @@ const createTransaction = async (req, res, next) => {
       categoryId,
       date,
       notes: notes || null,
+      mood: mood || null,
     });
 
     const full = await Transaction.findByPk(transaction.id, { include: Category });
@@ -106,7 +107,7 @@ const updateTransaction = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
     }
 
-    const { title, amount, type, categoryId, date, notes } = req.body;
+    const { title, amount, type, categoryId, date, notes, mood } = req.body;
     await transaction.update({
       title: title ?? transaction.title,
       amount: amount ?? transaction.amount,
@@ -114,6 +115,7 @@ const updateTransaction = async (req, res, next) => {
       categoryId: categoryId ?? transaction.categoryId,
       date: date ?? transaction.date,
       notes: notes ?? transaction.notes,
+      mood: mood !== undefined ? (mood || null) : transaction.mood,
     });
 
     const full = await Transaction.findByPk(transaction.id, { include: Category });

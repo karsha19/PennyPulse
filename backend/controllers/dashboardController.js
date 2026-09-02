@@ -1,5 +1,48 @@
 const { Op, fn, col, literal } = require('sequelize');
-const { Transaction, Category } = require('../models');
+const { Transaction, Category, Budget } = require('../models');
+const { calculatePulseScore } = require('../utils/pulseScore');
+
+const getBudgetAdherence = async (userId) => {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+  const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+  const endDate = new Date(year, month, 0).toISOString().split('T')[0];
+
+  const budgets = await Budget.findAll({ where: { userId, month, year } });
+  if (budgets.length === 0) return 1;
+
+  const spendRows = await Transaction.findAll({
+    where: { userId, type: 'expense', date: { [Op.between]: [startDate, endDate] } },
+    attributes: ['categoryId', [fn('SUM', col('amount')), 'spent']],
+    group: ['categoryId'],
+    raw: true,
+  });
+
+  const spendMap = {};
+  spendRows.forEach((r) => { spendMap[r.categoryId] = parseFloat(r.spent); });
+
+  const underBudget = budgets.filter((b) => (spendMap[b.categoryId] || 0) <= parseFloat(b.amount)).length;
+  return underBudget / budgets.length;
+};
+
+const getMonthlyExpenses = async (userId, months = 6) => {
+  const now = new Date();
+  const startDate = new Date(now.getFullYear(), now.getMonth() - months + 1, 1)
+    .toISOString().split('T')[0];
+
+  const rows = await Transaction.findAll({
+    where: { userId, type: 'expense', date: { [Op.gte]: startDate } },
+    attributes: [
+      [fn('DATE_FORMAT', col('date'), '%Y-%m'), 'ym'],
+      [fn('SUM', col('amount')), 'total'],
+    ],
+    group: [literal("DATE_FORMAT(date, '%Y-%m')")],
+    raw: true,
+  });
+
+  return rows.map((r) => parseFloat(r.total));
+};
 
 // @route  GET /api/dashboard/summary
 const getSummary = async (req, res, next) => {
@@ -23,6 +66,18 @@ const getSummary = async (req, res, next) => {
     const balance = totalIncome - totalExpenses;
     const savings = balance;
 
+    const [budgetAdherence, monthlyExpenses] = await Promise.all([
+      getBudgetAdherence(userId),
+      getMonthlyExpenses(userId),
+    ]);
+
+    const pulseScore = calculatePulseScore({
+      totalIncome,
+      totalExpenses,
+      budgetAdherence,
+      monthlyExpenses,
+    });
+
     const recentTransactions = await Transaction.findAll({
       where: { userId },
       include: Category,
@@ -37,6 +92,7 @@ const getSummary = async (req, res, next) => {
         totalIncome,
         totalExpenses,
         savings,
+        pulseScore,
       },
       recentTransactions,
     });
@@ -128,6 +184,32 @@ const getAnalytics = async (req, res, next) => {
     const monthCount = monthsWithData.length || 1;
     const avgMonthlySpending = (totalExpenseAgg || 0) / monthCount;
 
+    const moodRows = await Transaction.findAll({
+      where: { userId, type: 'expense', mood: { [Op.ne]: null } },
+      attributes: ['mood', [fn('SUM', col('amount')), 'total'], [fn('COUNT', col('id')), 'count']],
+      group: ['mood'],
+      raw: true,
+    });
+
+    const moodBreakdown = moodRows.map((r) => ({
+      mood: r.mood,
+      total: parseFloat(r.total),
+      count: parseInt(r.count, 10),
+    }));
+
+    const incomeTotal = await Transaction.sum('amount', { where: { userId, type: 'income' } }) || 0;
+    const expenseTotal = totalExpenseAgg || 0;
+    const [budgetAdherence, monthlyExpenses] = await Promise.all([
+      getBudgetAdherence(userId),
+      getMonthlyExpenses(userId),
+    ]);
+    const pulseScore = calculatePulseScore({
+      totalIncome: incomeTotal,
+      totalExpenses: expenseTotal,
+      budgetAdherence,
+      monthlyExpenses,
+    });
+
     res.status(200).json({
       success: true,
       analytics: {
@@ -141,6 +223,8 @@ const getAnalytics = async (req, res, next) => {
           total: parseFloat(c.total),
           color: c.Category.color,
         })),
+        moodBreakdown,
+        pulseScore,
       },
     });
   } catch (err) {

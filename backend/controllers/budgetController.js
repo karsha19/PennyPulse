@@ -59,6 +59,16 @@ const getBudgets = async (req, res, next) => {
       const spent = spendMap[b.categoryId] || 0;
       const limit = parseFloat(b.amount);
       const percentage = limit > 0 ? Math.min((spent / limit) * 100, 999) : 0;
+      const exceeded = spent > limit;
+
+      const today = new Date();
+      const isCurrentMonth = month === today.getMonth() + 1 && year === today.getFullYear();
+      const daysElapsed = isCurrentMonth ? today.getDate() : new Date(year, month, 0).getDate();
+      const daysInMonth = new Date(year, month, 0).getDate();
+      const projectedSpend = daysElapsed > 0 ? (spent / daysElapsed) * daysInMonth : 0;
+      const projectedExceeded = projectedSpend > limit;
+      const paceWarning = !exceeded && projectedExceeded && isCurrentMonth;
+
       return {
         id: b.id,
         category: b.Category,
@@ -67,6 +77,11 @@ const getBudgets = async (req, res, next) => {
         remaining: limit - spent,
         percentage: Math.round(percentage * 10) / 10,
         exceeded: spent > limit,
+        projectedSpend: Math.round(projectedSpend * 100) / 100,
+        projectedExceeded,
+        paceWarning,
+        daysElapsed,
+        daysInMonth,
         month,
         year,
       };

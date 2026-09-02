@@ -1,9 +1,11 @@
 import { Pencil, Trash2, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { formatCurrency, formatDate } from '../utils/format';
+import { getMoodMeta } from '../utils/mood';
 
 const TransactionRow = ({ transaction, onEdit, onDelete }) => {
   const isIncome = transaction.type === 'income';
   const category = transaction.Category;
+  const moodMeta = getMoodMeta(transaction.mood);
 
   return (
     <div className="group flex items-center gap-4 border-b border-slate-100 px-4 py-3.5 transition-colors last:border-0 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
@@ -18,6 +20,7 @@ const TransactionRow = ({ transaction, onEdit, onDelete }) => {
         <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{transaction.title}</p>
         <p className="text-xs text-slate-400">
           {category?.name || 'Uncategorized'} · {formatDate(transaction.date)}
+          {moodMeta && <span className="ml-1.5">{moodMeta.emoji} {moodMeta.label}</span>}
         </p>
       </div>
 

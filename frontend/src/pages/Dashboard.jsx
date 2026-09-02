@@ -9,6 +9,7 @@ import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
 import TransactionForm from '../components/TransactionForm';
 import { StatCardSkeleton, RowSkeleton, ChartSkeleton } from '../components/Skeletons';
+import PulseScoreCard from '../components/PulseScoreCard';
 import { fetchSummary, fetchChartData, fetchCategories, createTransaction } from '../api/endpoints';
 import { formatCurrency } from '../utils/format';
 import toast from 'react-hot-toast';
@@ -77,6 +78,10 @@ const Dashboard = () => {
             <StatCard label="Savings" value={formatCurrency(summary?.savings)} icon={PiggyBank} tone="amber" />
           </>
         )}
+      </div>
+
+      <div className="mb-6">
+        <PulseScoreCard pulseScore={summary?.pulseScore} loading={loading} />
       </div>
 
       <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-5">

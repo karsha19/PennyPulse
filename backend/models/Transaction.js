@@ -38,6 +38,10 @@ const Transaction = sequelize.define('Transaction', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  mood: {
+    type: DataTypes.ENUM('necessity', 'celebration', 'stress', 'boredom', 'other'),
+    allowNull: true,
+  },
 }, {
   tableName: 'transactions',
   indexes: [

@@ -83,6 +83,7 @@ const Budgets = () => {
   };
 
   const anyExceeded = budgets.some((b) => b.exceeded);
+  const anyPaceWarning = budgets.some((b) => b.paceWarning);
 
   return (
     <DashboardLayout title="Budgets">
@@ -106,6 +107,12 @@ const Budgets = () => {
       {anyExceeded && (
         <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
           ⚠️ You've exceeded the budget in one or more categories this month.
+        </div>
+      )}
+
+      {anyPaceWarning && !anyExceeded && (
+        <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-400">
+          📈 At your current spending pace, you may exceed one or more budgets before month end.
         </div>
       )}
 

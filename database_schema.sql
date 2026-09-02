@@ -30,6 +30,7 @@ CREATE TABLE transactions (
   type ENUM('income', 'expense') NOT NULL,
   date DATE NOT NULL,
   notes TEXT,
+  mood ENUM('necessity', 'celebration', 'stress', 'boredom', 'other') NULL,
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

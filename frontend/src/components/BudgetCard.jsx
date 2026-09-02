@@ -1,8 +1,8 @@
-import { Trash2, AlertTriangle } from 'lucide-react';
+import { Trash2, AlertTriangle, TrendingUp } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
 const BudgetCard = ({ budget, onDelete }) => {
-  const { category, amount, spent, percentage, exceeded } = budget;
+  const { category, amount, spent, percentage, exceeded, projectedSpend, paceWarning } = budget;
 
   const barColor = exceeded ? 'bg-red-500' : percentage > 80 ? 'bg-amber-500' : 'bg-emerald-500';
 
@@ -41,6 +41,18 @@ const BudgetCard = ({ budget, onDelete }) => {
           </span>
         )}
       </div>
+
+      {paceWarning && (
+        <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-900 dark:bg-amber-950/40">
+          <TrendingUp size={14} className="mt-0.5 shrink-0 text-amber-600" />
+          <div>
+            <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">Pace warning</p>
+            <p className="text-xs text-amber-600 dark:text-amber-500">
+              On track to spend {formatCurrency(projectedSpend)} by month end
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

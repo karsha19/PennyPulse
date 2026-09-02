@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { MOOD_OPTIONS } from '../utils/mood';
 
 const initialState = {
   title: '',
@@ -8,6 +9,7 @@ const initialState = {
   categoryId: '',
   date: new Date().toISOString().split('T')[0],
   notes: '',
+  mood: '',
 };
 
 const TransactionForm = ({ categories, initialData, onSubmit, onCancel, submitting }) => {
@@ -23,6 +25,7 @@ const TransactionForm = ({ categories, initialData, onSubmit, onCancel, submitti
         categoryId: initialData.categoryId || initialData.Category?.id || '',
         date: initialData.date,
         notes: initialData.notes || '',
+        mood: initialData.mood || '',
       });
     } else {
       setForm(initialState);
@@ -51,7 +54,7 @@ const TransactionForm = ({ categories, initialData, onSubmit, onCancel, submitti
       toast.error('Please fix the highlighted fields');
       return;
     }
-    onSubmit({ ...form, amount: Number(form.amount), categoryId: Number(form.categoryId) });
+    onSubmit({ ...form, amount: Number(form.amount), categoryId: Number(form.categoryId), mood: form.mood || null });
   };
 
   const filteredCategories = categories.filter((c) => c.type === form.type || c.type === 'both');
@@ -72,7 +75,7 @@ const TransactionForm = ({ categories, initialData, onSubmit, onCancel, submitti
         </button>
         <button
           type="button"
-          onClick={() => setForm((p) => ({ ...p, type: 'income', categoryId: '' }))}
+          onClick={() => setForm((p) => ({ ...p, type: 'income', categoryId: '', mood: '' }))}
           className={`rounded-xl border py-2.5 text-sm font-semibold transition-all ${
             form.type === 'income'
               ? 'border-emerald-500 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40'
@@ -117,6 +120,29 @@ const TransactionForm = ({ categories, initialData, onSubmit, onCancel, submitti
         <label className="label-text">Notes (optional)</label>
         <textarea name="notes" value={form.notes} onChange={handleChange} rows={2} placeholder="Add a note..." className="input-field resize-none" />
       </div>
+
+      {form.type === 'expense' && (
+        <div>
+          <label className="label-text">How did this feel? (optional)</label>
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+            {MOOD_OPTIONS.map((m) => (
+              <button
+                key={m.value}
+                type="button"
+                onClick={() => setForm((p) => ({ ...p, mood: p.mood === m.value ? '' : m.value }))}
+                className={`flex flex-col items-center gap-1 rounded-xl border py-2 text-xs font-medium transition-all ${
+                  form.mood === m.value
+                    ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300'
+                    : 'border-slate-200 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span className="text-lg">{m.emoji}</span>
+                {m.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex gap-3 pt-2">
         <button type="button" onClick={onCancel} className="btn-secondary flex-1">Cancel</button>

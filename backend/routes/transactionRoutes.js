@@ -19,6 +19,7 @@ const transactionValidation = [
   body('type').isIn(['income', 'expense']).withMessage('Type must be income or expense'),
   body('categoryId').isInt().withMessage('Category is required'),
   body('date').isISO8601().withMessage('Valid date is required'),
+  body('mood').optional({ nullable: true }).isIn(['necessity', 'celebration', 'stress', 'boredom', 'other']).withMessage('Invalid mood'),
 ];
 
 router.route('/')
