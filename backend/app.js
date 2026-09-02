@@ -13,7 +13,7 @@ const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 const app = express();
 
-// Global middleware 
+
 app.use(helmet());
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
 app.use(express.json());
@@ -22,12 +22,12 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-// Health check 
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ success: true, message: 'Expense Tracker API is running' });
 });
 
-//  Routes 
+
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
@@ -35,7 +35,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/export', exportRoutes);
 
-//  Error handling
+
 app.use(notFound);
 app.use(errorHandler);
 

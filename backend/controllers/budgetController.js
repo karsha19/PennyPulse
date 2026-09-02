@@ -1,7 +1,7 @@
 const { Op, fn, col } = require('sequelize');
 const { Budget, Category, Transaction } = require('../models');
 
-// @route  POST /api/budgets  (create or update a category's monthly budget)
+
 const setBudget = async (req, res, next) => {
   try {
     const { categoryId, amount, month, year } = req.body;
@@ -23,7 +23,7 @@ const setBudget = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/budgets?month=&year=  (with spent-so-far progress)
+
 const getBudgets = async (req, res, next) => {
   try {
     const now = new Date();
@@ -35,9 +35,9 @@ const getBudgets = async (req, res, next) => {
       include: Category,
     });
 
-    // Compute amount spent per category for that month
+    
     const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
-    const endDate = new Date(year, month, 0).toISOString().split('T')[0]; // last day of month
+    const endDate = new Date(year, month, 0).toISOString().split('T')[0]; 
 
     const spendRows = await Transaction.findAll({
       where: {
@@ -93,7 +93,7 @@ const getBudgets = async (req, res, next) => {
   }
 };
 
-// @route  DELETE /api/budgets/:id
+
 const deleteBudget = async (req, res, next) => {
   try {
     const budget = await Budget.findOne({ where: { id: req.params.id, userId: req.user.id } });

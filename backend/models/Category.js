@@ -20,7 +20,7 @@ const Category = sequelize.define('Category', {
   },
   icon: {
     type: DataTypes.STRING(50),
-    defaultValue: 'Tag', // lucide-react icon name
+    defaultValue: 'Tag', 
   },
   color: {
     type: DataTypes.STRING(20),

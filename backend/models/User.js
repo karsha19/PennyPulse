@@ -19,7 +19,7 @@ const User = sequelize.define('User', {
   },
   password: {
     type: DataTypes.STRING(255),
-    allowNull: false, // stored as bcrypt hash
+    allowNull: false, 
   },
   currency: {
     type: DataTypes.STRING(10),

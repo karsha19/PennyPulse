@@ -18,7 +18,7 @@ const defaultCategories = [
 const seed = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync(); // creates tables if not present
+    await sequelize.sync(); 
 
     for (const cat of defaultCategories) {
       await Category.findOrCreate({ where: { name: cat.name }, defaults: cat });

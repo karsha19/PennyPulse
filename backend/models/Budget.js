@@ -24,7 +24,7 @@ const Budget = sequelize.define('Budget', {
     validate: { min: 0 },
   },
   month: {
-    type: DataTypes.INTEGER, // 1-12
+    type: DataTypes.INTEGER, 
     allowNull: false,
   },
   year: {

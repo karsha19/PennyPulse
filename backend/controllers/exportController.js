@@ -2,7 +2,7 @@ const { Parser } = require('json2csv');
 const PDFDocument = require('pdfkit');
 const { Transaction, Category } = require('../models');
 
-// @route  GET /api/export/csv
+
 const exportCSV = async (req, res, next) => {
   try {
     const transactions = await Transaction.findAll({
@@ -33,7 +33,7 @@ const exportCSV = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/export/pdf
+
 const exportPDF = async (req, res, next) => {
   try {
     const transactions = await Transaction.findAll({

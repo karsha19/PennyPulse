@@ -12,7 +12,7 @@ const navItems = [
 const Sidebar = ({ open, onClose }) => {
   return (
     <>
-      {/* Mobile overlay */}
+      {}
       {open && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"

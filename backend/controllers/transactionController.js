@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { Transaction, Category } = require('../models');
 
-// @route  POST /api/transactions
+
 const createTransaction = async (req, res, next) => {
   try {
     const { title, amount, type, categoryId, date, notes, mood } = req.body;
@@ -24,7 +24,7 @@ const createTransaction = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/transactions  (supports search, filter, sort, pagination)
+
 const getTransactions = async (req, res, next) => {
   try {
     const {
@@ -83,7 +83,7 @@ const getTransactions = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/transactions/:id
+
 const getTransactionById = async (req, res, next) => {
   try {
     const transaction = await Transaction.findOne({
@@ -99,7 +99,7 @@ const getTransactionById = async (req, res, next) => {
   }
 };
 
-// @route  PUT /api/transactions/:id
+
 const updateTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findOne({ where: { id: req.params.id, userId: req.user.id } });
@@ -125,7 +125,7 @@ const updateTransaction = async (req, res, next) => {
   }
 };
 
-// @route  DELETE /api/transactions/:id
+
 const deleteTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findOne({ where: { id: req.params.id, userId: req.user.id } });

@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../models');
 const generateToken = require('../utils/generateToken');
 
-// @route  POST /api/auth/register
+
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -29,7 +29,7 @@ const register = async (req, res, next) => {
   }
 };
 
-// @route  POST /api/auth/login
+
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -56,7 +56,7 @@ const login = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/auth/me
+
 const getMe = async (req, res) => {
   res.status(200).json({ success: true, user: req.user });
 };

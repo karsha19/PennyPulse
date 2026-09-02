@@ -1,8 +1,6 @@
-/**
- * Computes a 0–100 Pulse Score from savings rate, budget adherence, and spending consistency.
- */
+
 const calculatePulseScore = ({ totalIncome, totalExpenses, budgetAdherence = 1, monthlyExpenses = [] }) => {
-  // Savings rate (0–40 pts): 30%+ savings rate earns full points
+  
   let savingsScore = 0;
   if (totalIncome > 0) {
     const savingsRate = Math.max(0, ((totalIncome - totalExpenses) / totalIncome) * 100);
@@ -11,16 +9,16 @@ const calculatePulseScore = ({ totalIncome, totalExpenses, budgetAdherence = 1, 
     savingsScore = 40;
   }
 
-  // Budget adherence (0–35 pts)
+  
   const budgetScore = Math.min(Math.max(budgetAdherence, 0), 1) * 35;
 
-  // Spending consistency (0–25 pts): lower month-to-month variance = higher score
-  let consistencyScore = 12; // neutral default when insufficient data
+  
+  let consistencyScore = 12; 
   if (monthlyExpenses.length >= 2) {
     const mean = monthlyExpenses.reduce((a, b) => a + b, 0) / monthlyExpenses.length;
     if (mean > 0) {
       const variance = monthlyExpenses.reduce((sum, v) => sum + (v - mean) ** 2, 0) / monthlyExpenses.length;
-      const cv = Math.sqrt(variance) / mean; // coefficient of variation
+      const cv = Math.sqrt(variance) / mean; 
       consistencyScore = Math.max(0, Math.min(25, 25 - cv * 25));
     } else {
       consistencyScore = 25;

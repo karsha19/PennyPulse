@@ -44,7 +44,7 @@ const getMonthlyExpenses = async (userId, months = 6) => {
   return rows.map((r) => parseFloat(r.total));
 };
 
-// @route  GET /api/dashboard/summary
+
 const getSummary = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -101,7 +101,7 @@ const getSummary = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/dashboard/charts  (category breakdown + monthly bar data for current year)
+
 const getChartData = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -155,7 +155,7 @@ const getChartData = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/dashboard/analytics
+
 const getAnalytics = async (req, res, next) => {
   try {
     const userId = req.user.id;
