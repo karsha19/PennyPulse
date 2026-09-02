@@ -4,39 +4,19 @@ A production-style personal finance tracker built with **React (Vite) + Tailwind
 
 ## ✨ Features
 
+### Core
 - **Auth**: Register/Login with JWT + bcrypt password hashing, protected routes, logout.
-- **Dashboard**: Total balance, income, expenses, savings, recent transactions, monthly bar chart (income vs expense) and category pie chart
+- **Dashboard**: Total balance, income, expenses, savings, recent transactions, monthly bar chart (income vs expense) and category pie chart.
 - **Transactions**: Full CRUD, search, filter (type/category), sort (date/amount), pagination.
 - **Budgets**: Per-category monthly budgets with progress bars and over-budget warnings.
 - **Analytics**: Highest spending category, total transactions, average monthly spend, category breakdown.
 - **Export**: Download transactions as CSV or PDF.
 - **UI/UX**: Dark/light mode (auto-detect + manual toggle), fully responsive, loading skeletons, empty states, toast notifications, smooth animations.
--**Pulse Score (0–100)**
-A financial wellness score based on:
 
-Savings rate (up to 40 pts)
-
-Budget adherence (up to 35 pts)
-Spending consistency (up to 25 pts)
-Shown on Dashboard and Analytics with a circular gauge and score breakdown.
-
--**Emotional Spending Tags**
-Expenses can be tagged with a mood:
-
-Necessity, Celebration, Stress, Boredom, Other
-
-Mood picker in the Add/Edit Transaction form (expenses only)
-
-Mood shown on transaction rows
-
-Emotional Spending breakdown on the Analytics page
-
--**Spending Pace Forecast**
-Budget cards now project month-end spending from your current pace:
-
-Pace warning on individual budget cards when you're on track to overspend
-Banner alert on the Budgets page when any category is at risk
-Files changed
+### Signature Features (PennyPulse)
+- **Pulse Score (0–100)**: A financial wellness score based on savings rate, budget adherence, and spending consistency. Shown on Dashboard and Analytics with a breakdown of each factor.
+- **Emotional Spending Tags**: Tag expenses with a mood — *Necessity*, *Celebration*, *Stress*, *Boredom*, or *Other*. View mood-based spending patterns on the Analytics page.
+- **Spending Pace Forecast**: Budget cards project month-end spending from your current daily pace and show early warnings before you overspend.
 
 ## 🗂️ Project Structure
 
@@ -48,7 +28,7 @@ expense-tracker/
 │   ├── middleware/      # auth, validation, error handling
 │   ├── models/          # Sequelize models + associations
 │   ├── routes/          # Express routers
-│   ├── utils/            # JWT helper, category seeder
+│   ├── utils/            # JWT helper, category seeder, pulse score calculator
 │   ├── app.js
 │   └── server.js
 ├── frontend/
@@ -58,7 +38,7 @@ expense-tracker/
 │       ├── context/      # Auth + Theme context
 │       ├── hooks/        # custom hooks (useDebounce)
 │       ├── pages/        # route-level pages
-│       ├── utils/        # formatting helpers
+│       ├── utils/        # formatting helpers, mood options
 │       ├── App.jsx
 │       └── main.jsx
 └── database_schema.sql   # reference SQL (Sequelize auto-creates tables too)
@@ -142,15 +122,15 @@ VITE_API_URL=http://localhost:5000/api
 | GET    | /api/auth/me                  | Current user (protected)             |
 | GET    | /api/categories               | List categories                      |
 | GET    | /api/transactions              | List (search/filter/sort/paginate)   |
-| POST   | /api/transactions               | Create transaction                   |
-| PUT    | /api/transactions/:id            | Update transaction                   |
+| POST   | /api/transactions               | Create transaction (optional `mood`) |
+| PUT    | /api/transactions/:id            | Update transaction (optional `mood`) |
 | DELETE | /api/transactions/:id              | Delete transaction                   |
-| GET    | /api/budgets?month=&year=            | List budgets w/ progress             |
+| GET    | /api/budgets?month=&year=            | List budgets w/ progress + pace forecast |
 | POST   | /api/budgets                           | Set/update budget                    |
 | DELETE | /api/budgets/:id                        | Remove budget                        |
-| GET    | /api/dashboard/summary                    | Totals + recent transactions         |
+| GET    | /api/dashboard/summary                    | Totals, Pulse Score, recent transactions |
 | GET    | /api/dashboard/charts                       | Pie + bar chart data                 |
-| GET    | /api/dashboard/analytics                      | Highest category, avg spend, etc.    |
+| GET    | /api/dashboard/analytics                      | Pulse Score, mood breakdown, category stats |
 | GET    | /api/export/csv                                | Download CSV                         |
 | GET    | /api/export/pdf                                  | Download PDF                         |
 
@@ -164,5 +144,14 @@ All routes except `/auth/register` and `/auth/login` require `Authorization: Bea
 
 ## 📝 Notes
 
-- `sequelize.sync()` is used for convenience in development. For production, replace with proper migrations (e.g. `sequelize-cli`).
+- `sequelize.sync({ alter: true })` is used in development to auto-add schema changes (e.g. the `mood` column on transactions). For production, replace with proper migrations (e.g. `sequelize-cli`).
 - The category list is global (shared across users); transactions and budgets are scoped per-user via `user_id` foreign keys.
+- **Transaction mood** (optional): `necessity`, `celebration`, `stress`, `boredom`, `other` — only applies to expense transactions.
+- **Pulse Score** weights: savings rate (40 pts), budget adherence (35 pts), spending consistency (25 pts).
+
+### Manual migration (if `mood` column is missing)
+
+```sql
+ALTER TABLE transactions
+ADD COLUMN mood ENUM('necessity', 'celebration', 'stress', 'boredom', 'other') NULL;
+```
